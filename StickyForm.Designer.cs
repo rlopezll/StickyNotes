@@ -40,6 +40,10 @@
 			greenToolStripMenuItem = new ToolStripMenuItem();
 			redToolStripMenuItem = new ToolStripMenuItem();
 			orangeToolStripMenuItem = new ToolStripMenuItem();
+			opacityToolStripMenuItem = new ToolStripMenuItem();
+			toolStripMenuItemOpacity100 = new ToolStripMenuItem();
+			toolStripMenuItemOpacity85 = new ToolStripMenuItem();
+			toolStripMenuItemOpacity75 = new ToolStripMenuItem();
 			toolStripMenuItem2 = new ToolStripSeparator();
 			styleToolStripMenuItem = new ToolStripMenuItem();
 			regularToolStripMenuItem = new ToolStripMenuItem();
@@ -51,14 +55,16 @@
 			alwaysOnTopToolStripMenuItem = new ToolStripMenuItem();
 			removeNoteToolStripMenuItem = new ToolStripMenuItem();
 			richTextBox1 = new RichTextBox();
+			panel1 = new Panel();
 			contextMenuStrip1.SuspendLayout();
+			panel1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// contextMenuStrip1
 			// 
-			contextMenuStrip1.Items.AddRange(new ToolStripItem[] { newNoteToolStripMenuItem, nameNoteToolStripMenuItem, colorsToolStripMenuItem, toolStripMenuItem2, styleToolStripMenuItem, alwaysOnTopToolStripMenuItem, removeNoteToolStripMenuItem });
+			contextMenuStrip1.Items.AddRange(new ToolStripItem[] { newNoteToolStripMenuItem, nameNoteToolStripMenuItem, colorsToolStripMenuItem, opacityToolStripMenuItem, toolStripMenuItem2, styleToolStripMenuItem, alwaysOnTopToolStripMenuItem, removeNoteToolStripMenuItem });
 			contextMenuStrip1.Name = "contextMenuStrip1";
-			contextMenuStrip1.Size = new Size(152, 142);
+			contextMenuStrip1.Size = new Size(152, 164);
 			// 
 			// newNoteToolStripMenuItem
 			// 
@@ -122,6 +128,34 @@
 			orangeToolStripMenuItem.Size = new Size(113, 22);
 			orangeToolStripMenuItem.Text = "Orange";
 			orangeToolStripMenuItem.Click += orangeToolStripMenuItem_Click;
+			// 
+			// opacityToolStripMenuItem
+			// 
+			opacityToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOpacity100, toolStripMenuItemOpacity85, toolStripMenuItemOpacity75 });
+			opacityToolStripMenuItem.Name = "opacityToolStripMenuItem";
+			opacityToolStripMenuItem.Size = new Size(151, 22);
+			opacityToolStripMenuItem.Text = "Opacity";
+			// 
+			// toolStripMenuItemOpacity100
+			// 
+			toolStripMenuItemOpacity100.Name = "toolStripMenuItemOpacity100";
+			toolStripMenuItemOpacity100.Size = new Size(102, 22);
+			toolStripMenuItemOpacity100.Text = "100%";
+			toolStripMenuItemOpacity100.Click += toolStripMenuItem4_Click;
+			// 
+			// toolStripMenuItemOpacity85
+			// 
+			toolStripMenuItemOpacity85.Name = "toolStripMenuItemOpacity85";
+			toolStripMenuItemOpacity85.Size = new Size(102, 22);
+			toolStripMenuItemOpacity85.Text = "85%";
+			toolStripMenuItemOpacity85.Click += toolStripMenuItem5_Click;
+			// 
+			// toolStripMenuItemOpacity75
+			// 
+			toolStripMenuItemOpacity75.Name = "toolStripMenuItemOpacity75";
+			toolStripMenuItemOpacity75.Size = new Size(102, 22);
+			toolStripMenuItemOpacity75.Text = "75%";
+			toolStripMenuItemOpacity75.Click += toolStripMenuItem6_Click;
 			// 
 			// toolStripMenuItem2
 			// 
@@ -196,21 +230,34 @@
 			// 
 			richTextBox1.BackColor = Color.FromArgb(255, 255, 192);
 			richTextBox1.BorderStyle = BorderStyle.None;
+			richTextBox1.Dock = DockStyle.Fill;
 			richTextBox1.Font = new Font("Segoe UI", 12F);
-			richTextBox1.Location = new Point(12, 12);
+			richTextBox1.Location = new Point(5, 5);
 			richTextBox1.Name = "richTextBox1";
-			richTextBox1.Size = new Size(285, 289);
+			richTextBox1.Size = new Size(485, 465);
 			richTextBox1.TabIndex = 1;
 			richTextBox1.Text = "";
+			// 
+			// panel1
+			// 
+			panel1.BorderStyle = BorderStyle.FixedSingle;
+			panel1.Controls.Add(richTextBox1);
+			panel1.Dock = DockStyle.Fill;
+			panel1.Location = new Point(0, 0);
+			panel1.Name = "panel1";
+			panel1.Padding = new Padding(5);
+			panel1.Size = new Size(497, 477);
+			panel1.TabIndex = 2;
+			panel1.Paint += panel1_Paint;
 			// 
 			// StickyForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = Color.FromArgb(255, 255, 192);
-			ClientSize = new Size(309, 313);
-			Controls.Add(richTextBox1);
-			FormBorderStyle = FormBorderStyle.FixedToolWindow;
+			ClientSize = new Size(497, 477);
+			Controls.Add(panel1);
+			FormBorderStyle = FormBorderStyle.SizableToolWindow;
 			Icon = (Icon)resources.GetObject("$this.Icon");
 			MaximizeBox = false;
 			Name = "StickyForm";
@@ -218,6 +265,7 @@
 			TopMost = true;
 			Load += StickyForm_Load;
 			contextMenuStrip1.ResumeLayout(false);
+			panel1.ResumeLayout(false);
 			ResumeLayout(false);
 		}
 
@@ -244,5 +292,10 @@
 		private ToolStripSeparator toolStripMenuItem1;
 		private ToolStripMenuItem unSelectedToolStripMenuItem;
 		private ToolStripMenuItem removeNoteToolStripMenuItem;
+		private Panel panel1;
+		private ToolStripMenuItem opacityToolStripMenuItem;
+		private ToolStripMenuItem toolStripMenuItemOpacity100;
+		private ToolStripMenuItem toolStripMenuItemOpacity85;
+		private ToolStripMenuItem toolStripMenuItemOpacity75;
 	}
 }

@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text.Json;
 using System.Windows.Forms;
@@ -12,11 +15,16 @@ namespace NotesSticky
 		public int ValidTop;
 		public int ValidLeft;
 
+		private int DefaultWidth = 325;
+		private int DefaultHeight = 352;
+
 		public StickyForm()
 		{
 			InitializeComponent();
 			richTextBox1.ContextMenuStrip = contextMenuStrip1;
 			this.LocationChanged += StickyForm_LocationChanged;
+
+			richTextBox1.Padding = new Padding(30); // margen de 10px por cada lado
 		}
 		private void StickyForm_LocationChanged(object sender, EventArgs e)
 		{
@@ -51,7 +59,7 @@ namespace NotesSticky
 					nota.Text = d.Title;
 					nota.Top = d.Top;
 					nota.Left = d.Left;
-					if(nota.Top < 0)
+					if (nota.Top < 0)
 					{
 						nota.Top = centerY;
 					}
@@ -61,7 +69,23 @@ namespace NotesSticky
 					}
 					nota.ValidTop = nota.Top;
 					nota.ValidLeft = nota.Left;
+					nota.Width = d.Width;
+					nota.Height = d.Height;
+					nota.Opacity = d.Opacity;
+					if(d.Opacity == 1.0)
+					{
+						nota.toolStripMenuItemOpacity100.Checked = true;
+					}
+					else if (d.Opacity == 0.85)
+					{
+						nota.toolStripMenuItemOpacity85.Checked = true;
+					}
+					else if (d.Opacity == 0.75)
+					{
+						nota.toolStripMenuItemOpacity75.Checked = true;
+					}
 					nota.TopMost = d.TopMost;
+					nota.alwaysOnTopToolStripMenuItem.Checked = d.TopMost;
 					nota.StartPosition = FormStartPosition.Manual;
 					if (File.Exists(d.FilePath))
 						nota.richTextBox1.Rtf = File.ReadAllText(d.FilePath);
@@ -111,7 +135,7 @@ namespace NotesSticky
 					{
 						foreach (var f in Application.OpenForms.OfType<StickyForm>())
 						{
-							if(f != mainForm)
+							if (f != mainForm && !f.TopMost)
 							{
 								//f.WindowState = FormWindowState.Minimized;
 								f.Hide();
@@ -122,7 +146,7 @@ namespace NotesSticky
 					{
 						foreach (var f in Application.OpenForms.OfType<StickyForm>())
 						{
-							if (f != mainForm)
+							if (f != mainForm && !f.TopMost)
 							{
 								f.Show();
 								//f.WindowState = FormWindowState.Normal;
@@ -210,7 +234,8 @@ namespace NotesSticky
 		{
 			var nota = new StickyForm();
 			nota.ShowInTaskbar = false;
-			Form mainForm = Application.OpenForms[0];
+			nota.Width = DefaultWidth;
+			nota.Height = DefaultHeight;
 			nota.Show();
 		}
 
@@ -249,7 +274,10 @@ namespace NotesSticky
 				Title = this.Text,
 				Top = this.ValidTop,
 				Left = this.ValidLeft,
+				Width = this.Width,
+				Height = this.Height,
 				TopMost = this.TopMost,
+				Opacity = this.Opacity,
 				BackColor = this.BackColor.ToArgb(),
 				FilePath = Path.Combine("notes", $"{Id}.rtf")
 			};
@@ -257,8 +285,50 @@ namespace NotesSticky
 
 		private void removeNoteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			bIgnoreCloseNote = true;
-			Close();
+			DialogResult result = MessageBox.Show("Are you sure you want to delete this note ? This action cannot be undone.",
+					"Delete Note",
+					MessageBoxButtons.YesNo,
+					MessageBoxIcon.Warning
+			);
+			if (result == DialogResult.Yes)
+			{
+				bIgnoreCloseNote = true;
+				Close();
+			}
+		}
+
+		private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+
+		}
+
+		private void panel1_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void toolStripMenuItem5_Click(object sender, EventArgs e)
+		{
+			toolStripMenuItemOpacity100.Checked = false;
+			toolStripMenuItemOpacity85.Checked = true;
+			toolStripMenuItemOpacity75.Checked = false;
+			Opacity = 0.85;
+		}
+
+		private void toolStripMenuItem4_Click(object sender, EventArgs e)
+		{
+			toolStripMenuItemOpacity100.Checked = true;
+			toolStripMenuItemOpacity85.Checked = false;
+			toolStripMenuItemOpacity75.Checked = false;
+			Opacity = 1.0;
+		}
+
+		private void toolStripMenuItem6_Click(object sender, EventArgs e)
+		{
+			toolStripMenuItemOpacity100.Checked = false;
+			toolStripMenuItemOpacity85.Checked = false;
+			toolStripMenuItemOpacity75.Checked = true;
+			Opacity = 0.75;
 		}
 	}
 }
